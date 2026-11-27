@@ -1,6 +1,9 @@
 """Fase 3c: arma el timeline del aftermovie con el estilo de estilo.md.
 V1 tomas · V2 destellos · A1 tema (con hueco antes del drop) · A2 whooshes · A3 riser · A4 impacto · A5 ambiente (si estilo lo pide)
-Nunca pisa timelines: si el nombre existe crea "v2", "v3"...  Guarda <work>/montage_plan.json para aprender después.
+Nunca pisa timelines: si el nombre existe crea "v2", "v3"...  Guarda <work>/montage_plan.json para aprender después
+(en --dry-run: montage_plan_dryrun.json).
+MODO FIESTA (bandas + DJs): si existe <work>/party_plan.json (o con --party) arma la estructura por bloques de estilo.md
+(party_block_order) sobre el tramo del tema que dejó el editor, con barridos propios, punch-in y cola de audio: ver party.py.
 
   python3 build_montage.py --project NOMBRE --name "Fiesta Aftermovie" [--format vertical|horizontal]
 """
@@ -13,9 +16,21 @@ ap.add_argument("--project", required=True)
 ap.add_argument("--name", required=True)
 ap.add_argument("--format", choices=["vertical", "horizontal"])
 ap.add_argument("--dry-run", action="store_true", help="Calcula y muestra el plan sin crear nada en Resolve")
+ap.add_argument("--party", action="store_true", help="Forzar el modo fiesta por bloques (party_plan.json)")
+ap.add_argument("--classic", action="store_true", help="Ignorar party_plan.json y usar subida/hueco/drop")
 a = ap.parse_args()
 ST = load_style()
 W = work_dir(a.project)
+if not a.classic and (a.party or os.path.exists(f"{W}/party_plan.json")):
+    import party
+    try:
+        r, project, mp = resolve()
+    except SystemExit as e:
+        if not a.dry_run:
+            raise
+        print(f"(sin Resolve: {e}; dry-run con cachés)"); r = project = mp = None
+    party.run(a, ST, W, r, project, mp, jload(f"{W}/resources.json") if os.path.exists(f"{W}/resources.json") else {})
+    sys.exit(0)
 SEL = jload(f"{W}/selects.json")
 SP = jload(f"{W}/song_plan.json")
 RS = jload(f"{W}/resources.json") if os.path.exists(f"{W}/resources.json") else {}
@@ -131,6 +146,7 @@ if a.dry_run:
     for sh in shots:
         print(f"  {sh['rec'] / FPS:6.2f}s {sh['len']:3d}f {sh['kind']:6} {sh['type']:8} {sh['name']}"
               f"{'  zoom ' + str(sh['zoom']) if sh['zoom'] != 1 else ''}{'  [' + sh['marker'] + ']' if sh['marker'] else ''}")
+    jsave({"mode": "classic", "timeline": a.name, "fps": FPS, "shots": shots}, f"{W}/montage_plan_dryrun.json")
     print(f"{len(shots)} tomas · {sum(s['len'] for s in shots) / FPS:.2f} s · drop {SP['drop_tl']:.2f} s (dry-run: no se creó nada)")
     sys.exit(0)
 

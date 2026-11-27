@@ -65,6 +65,17 @@ Si contradice estilo.md, preguntá cuál manda **antes** de montar. Lo nuevo y c
      versión mala que **vos** acabás de crear en esta sesión sí la podés borrar con `mp.DeleteTimelines`).
 5. **Reportá:** la estructura (subida, hueco, drop, cierre), las pistas, los marcadores y la **checklist de volúmenes**, más lo que la API no deja hacer.
 
+## 3b. Modo fiesta (bandas + DJs) — estructura estándar
+Si el evento tiene bandas y DJs, usá la estructura por bloques de estilo.md (`party_block_order`) en vez de subida/hueco/drop:
+1. Si el editor dejó un timeline con solo el tramo del tema, ese es el audio y la duración exactos (no correr analyze_song).
+2. Mirá las hojas y escribí `<work>/party_plan.json` (formato en el docstring de `party.py`): por toma, `block`, `clip`,
+   `in` o `whip`, `beats` y `punch_in` en el plano general del bloque DJs. Escena de cabina: mano va a la consola → DJ → detalle.
+3. `find_whips.py` (lee los clips con `"whip": true` del plan) → whips.json. Los barridos solo van entre planos del mismo bloque.
+4. `build_montage.py --name "<Evento> Aftermovie v1" --dry-run` (detecta party_plan.json solo; sin Resolve usa las cachés).
+   Revisá los `!` y después corré lo mismo sin `--dry-run`. Siempre queda `montage_plan.json` para learn_diff.
+5. Lo que la API no hace queda en marcadores: "Mezcla (a mano)" con los volúmenes, "Fade out", "Brightness Flash" en los
+   cortes de cabina, y "punch-in" para ajustar el encuadre.
+
 ## 4. Aprender de las correcciones (siempre al final)
 1. Pedile al usuario que corrija el timeline a mano y te avise. Preguntale también lo que la API no ve:
    volúmenes finales, fundidos, efectos o zooms agregados, y lo que no le gustó o prefiere.

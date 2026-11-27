@@ -81,6 +81,24 @@ if v1:
     if end_v != end_b:
         R["summary"].append(f"V1 termina {(end_v - end_b) / FPS:+.2f} s respecto del tema — el video debe terminar con el tema")
 
+# efectos/generadores agregados a mano (Fusion, p. ej. Brightness Flash): no son clips del plan
+plan_names = {s["name"] for s in built} | {x["name"] for x in plan.get("flashes", [])}
+for key, val in snap.items():
+    if key.startswith("video"):
+        for x in val["items"]:
+            if x["name"] not in plan_names and not x["name"].lower().endswith((".mp4", ".mov", ".mxf", ".braw", ".m4v")):
+                R["summary"].append(f"Efecto agregado a mano: {x['name']} en {x['start'] / FPS:.2f} s ({x['dur']} cuadros, {key})")
+# largo del tema (modo fiesta: tramo del editor + cola de audio)
+if plan.get("mode") == "party":
+    a1 = snap.get("audio1:Tema", {"items": []})["items"]
+    if a1:
+        exp = plan["song"]["len_f"] + plan.get("audio_tail", 0)
+        if a1[0]["dur"] != exp:
+            R["summary"].append(f"Tema: {exp}→{a1[0]['dur']} cuadros ({(a1[0]['dur'] - exp) / FPS:+.2f} s de cola respecto del plan)")
+    pm = {int(float(k)) for k in snap["markers"]}
+    lost = [m for m in plan.get("markers", []) if m[0] not in pm]
+    if lost:
+        R["summary"].append("Marcadores sacados: " + ", ".join(f"{m[2]} @{m[0]}" for m in lost))
 v2 = snap.get("video2:Destellos", {"items": []})["items"]
 modes = Counter(MODES.get(x["CompositeMode"], x["CompositeMode"]) for x in v2)
 if v2:
