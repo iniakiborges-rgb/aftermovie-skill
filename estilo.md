@@ -60,6 +60,15 @@ abajo con fecha; no se borra lo anterior. Si algo nuevo contradice lo de acá, *
   - **Confirmado después (2026-11-26):** whooshes −8 dB, riser −5 dB (antes sugerido −4), impacto 0 dB, tema 0 dB;
     fade out de 1 s al final; ambiente de público "Cheering Crowd" bajito (antes: sin ambiente).
   - Sin cambios en la elección de tomas, el orden, los zooms fijos, las rotaciones, el riser, el impacto ni los whooshes.
+- **2026-11-26 · UOPA Tarde Aftermovie v1 (pedido del editor, entrega urgente):**
+  - **Música elegida por el editor:** si deja un timeline con solo el tramo del tema, se usa ese audio y esa duración exactos (sin buscar drop, sin hueco ni riser).
+  - **Barridos propios:** los barridos de las tomas fuente NO se descartan. Se usan como transición entre planos del mismo tipo
+    (banda-banda, DJ-DJ, cabina-cabina), con el punto más rápido del barrido justo en el corte/beat.
+  - **Orden pedido:** apertura de DJs (unos 2 s, 4-5 tomas de 1 beat) → bandas (2 bandas, 1-2 tomas c/u, prioridad cantantes) →
+    bloque DJs de general a detalle con mini escena de cabina (mano va a la consola → detalle de la mano), priorizando acciones a cámara
+    y las DJs juntas → flexeo de público (bailando con las DJs de fondo, caras, giros) en los golpes fuertes.
+  - Marcadores de color por bloque (Apertura rosa, Bandas amarillo, DJs violeta, Cabina cian, Público verde).
+  - A CONFIRMAR: si este orden pasa a ser el estándar o fue solo para este evento.
 
 ## Parámetros (los leen los scripts)
 ```json
