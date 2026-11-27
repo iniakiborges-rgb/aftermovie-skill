@@ -11,8 +11,23 @@ abajo con fecha; no se borra lo anterior. Si algo nuevo contradice lo de acá, *
 - La toma más rápida (media unidad, unos 8 cuadros) se reserva para el arranque del drop.
 - **Los cortes no se salen de la grilla:** si una toma se acorta, la siguiente se alarga para compensar. Nunca se usa ripple
   que corra el resto. **V1 termina exactamente con el tema.**
+- **Excepción, cola de audio (confirmada, UOPA Tarde 2026-11-26):** cuando el editor fija el tramo, el tema puede seguir
+  ~0,5 s (12 cuadros) después del último plano, a propósito. Los cortes de V1 no se corren.
 
-## Estructura
+## Estructura estándar · fiestas con bandas y DJs (confirmada 2026-11-26)
+Si el evento tiene bandas y DJs, **esta estructura manda** sobre la de subida/hueco/drop de abajo:
+1. **Apertura DJs:** unos 2 s, 4–5 tomas de 1 beat.
+2. **Bandas:** dos bandas distintas, 1–2 tomas por banda (se pueden intercalar), prioridad a los cantantes principales.
+3. **Bloque DJs:** de general a detalle, priorizando acciones a cámara y las DJs juntas. Termina en una **mini escena de cabina**
+   (mano que va a la consola → detalle de la mano en la consola).
+4. **Flexeo de público:** gente bailando con las DJs de fondo, caras, giros, bien enfocado, en los golpes fuertes.
+- **Todos los cortes al beat**, y los de los bloques en los golpes fuertes.
+- **Tramo del tema:** si el editor deja un timeline con solo el tramo, se usa ese audio exacto (sin buscar drop, sin hueco ni riser).
+- Marcadores de color por bloque: Apertura rosa · Bandas amarillo · DJs violeta · Cabina cian · Público verde.
+- **Barridos propios:** los barridos de las tomas fuente **no se descartan**. Son la transición entre planos del mismo tipo
+  (banda↔banda, aunque sean bandas distintas; DJ↔DJ; cabina↔cabina): la toma que sale termina en el punto más rápido del barrido, justo en el beat.
+
+## Estructura (sin bandas / reel genérico)
 - **Apertura con marca:** un detalle con logo (vaso, cartel proyectado).
 - **Subida:** cortes cada 2 unidades que se aceleran a 1, con un riser que crece.
 - **Hueco:** unos 0,6 s casi en silencio (se corta el tema 1 beat antes del drop). La toma de antes lo cruza.
@@ -35,7 +50,11 @@ abajo con fecha; no se borra lo anterior. Si algo nuevo contradice lo de acá, *
 - Film burn, light leak o flash con el **pico de luz justo en el corte**, en el drop, al entrar a cada toma larga y en el cierre.
 - **Modo de composición (corregido a mano):** prefiere **Add** (3 de 6), después Screen (2) y un Linear Dodge.
   El burn grande del drop va en Add.
-- **Tamaño (corregido a mano):** zoom de unos 1,0–1,1. Escalarlos para llenar el cuadro (2,9–3,2) quedó demasiado grande.
+- **Tamaño: depende del material (confirmado 2026-11-26).** Dos opciones válidas:
+  sin rotar con zoom 1,0–1,1 (UOPA v1) o **rotado −90° con zoom ~2,7** para que el destello horizontal llene el vertical (UOPA Tarde).
+  Elegir según el destello; ante la duda, dejar marcador y que el editor decida.
+- **Brightness Flash (efecto Fusion del editor):** lo agregó a mano en los cortes de la escena de cabina, centrado en el corte
+  (unos 4 cuadros antes y 1–3 después). La API no puede ponerlo: dejar marcador "brightness flash" en esos cortes.
 - **Duración (corregido a mano):** destellos cortos de unos 0,45–0,6 s. El burn del drop dura unos 2 s.
 - Los leaks largos se recortan a 1–1,2 s y se elige la parte con más color.
 
@@ -68,7 +87,24 @@ abajo con fecha; no se borra lo anterior. Si algo nuevo contradice lo de acá, *
     bloque DJs de general a detalle con mini escena de cabina (mano va a la consola → detalle de la mano), priorizando acciones a cámara
     y las DJs juntas → flexeo de público (bailando con las DJs de fondo, caras, giros) en los golpes fuertes.
   - Marcadores de color por bloque (Apertura rosa, Bandas amarillo, DJs violeta, Cabina cian, Público verde).
-  - A CONFIRMAR: si este orden pasa a ser el estándar o fue solo para este evento.
+  - ~~A CONFIRMAR~~ → **Confirmado (2026-11-26): el orden por bloques es la estructura estándar para fiestas con bandas y DJs.**
+- **2026-11-26 · UOPA Tarde · correcciones a mano sobre "UOPA Tarde Aftermovie v1"** (comparado contra el plan del script; no había montage_plan.json):
+  - **Resultado:** según el editor, salió **~20 % mejor que UOPA v1**. **Mantener:** el orden por bloques, los barridos propios como
+    transiciones, el tramo del tema fijado por el editor y todos los cortes al beat. La grilla de cortes quedó igual: no se movió ningún corte de bloque.
+  - **Bandas:** las intercaló y agregó tomas (312 de 6 cuadros → **329 Bardo Tano general** → 314 cantante → 312 con el barrido justo en el corte → 328 → 318).
+    El barrido de 312 (banda 1) se usa para pasar a 328 (Bardo Tano), así que "mismo tipo" = banda con banda, aunque sean bandas distintas.
+    En 328 corrió el In (el barrido ya no cae en el corte a 318).
+  - **Bloque DJs:** el general 386 lo partió en dos con un **punch-in** en la misma toma (zoom 1,49, tilt −109) → general a detalle con corte de zoom.
+    361 lo cambió a otro momento (13,2 s en vez de 2,6 s) y lo partió en dos (jump cut). Mi elección de "las dos juntas" en 2,6 s no servía.
+  - **Cabina:** reordenó a 369 → **372 (mano va a la consola, barrido) → 359 → 370 detalle**, con Brightness Flash en los cortes 372→359 y 359→370.
+  - **Apertura:** 386 desde otro momento (6,2 s en vez de 27,4 s). Público: 367 desde 0,3 s en vez de 2,0 s. Ajustes chicos de In: 314 +6 cuadros, 359 −8 cuadros.
+  - **Destellos V2:** los tres en Add (Filmburn1 estaba en Screen), rotados −90° con zoom 2,71; 16mm Burn recortado de 12 a 7 cuadros. Timing igual.
+  - **SFX:** whooshes, impacto y ambiente sin cambios (a un whoosh le recortó la cola 5 cuadros).
+  - **Marcadores:** sacó el "zoom in" de la apertura; los de bloque y el "zoom out" del cierre quedaron.
+  - **Tema:** lo alargó 12 cuadros después del final de V1, a propósito (cola de audio).
+  - **Hacerlo directo la próxima vez:** barridos también entre bandas distintas · punch-in para pasar de general a detalle en el bloque DJs ·
+    escena de cabina mano→DJ→detalle con marcador de Brightness Flash · revisar más cuadros para elegir el momento de "las dos juntas" ·
+    destellos en Add · cola de audio de ~0,5 s · sin marcador de zoom in en la apertura.
 
 ## Parámetros (los leen los scripts)
 ```json
@@ -94,10 +130,12 @@ abajo con fecha; no se borra lo anterior. Si algo nuevo contradice lo de acá, *
     "drop_len": 2.0,
     "peak_position": 0.5,
     "zoom": 1.05,
-    "composite_cycle": ["Add", "Screen", "Screen", "Add", "Add", "LinearDodge"]
+    "composite_cycle": ["Add", "Add", "Screen", "Add", "Add", "LinearDodge"]
   },
   "ambience": {"enabled": true, "level": "bajito (~-18 dB, a oído)"},
   "fade_out_seconds": 1.0,
+  "audio_tail_seconds": 0.48,
+  "party_block_order": ["Apertura DJs", "Bandas", "DJs", "Cabina", "Público"],
   "volumes_db": {
     "Tema": "0 dB",
     "Riser": "-5 dB",
